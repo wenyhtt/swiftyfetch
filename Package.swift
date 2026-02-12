@@ -11,7 +11,7 @@ let package = Package(
         .executableTarget(
             name: "swiftfetch",
             resources: [
-                .copy("logo")  // Swift will now include everything inside this folder
+                .copy("Resources")  // Swift will now include everything inside this folder
             ]
         )
     ]
