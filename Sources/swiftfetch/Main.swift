@@ -1,5 +1,11 @@
 import Foundation
 
+func getPhysicalMemory() -> String {
+    let totalBytes = ProcessInfo.processInfo.physicalMemory
+    let gigabytes = Double(totalBytes) / 1024 / 1024 / 1024
+    return String(format: "%.1f GB", gigabytes)
+}
+
 @main
 struct swiftfetch {
     static func main() {
@@ -15,16 +21,19 @@ struct swiftfetch {
         print(
             "\(Colors.orange)Uptime:\(Colors.reset) \(Int(ProcessInfo.processInfo.systemUptime / 3600)) hours"
         )
-        // print("\(Colors.orange)Memory:\(Colors.reset)  \(processInfo.physicalMemory / 1024 / 1024 / 1024) GB")
+        print("\(Colors.orange)Memory:\(Colors.reset)  \(getPhysicalMemory())")
         // Check enery mode on macOS
         #if os(macOS)
-            let isLowPower = ProcessInfo.processInfo.isLowPowerModeEnabled
+            var energyStatus = "Unknown"
+            if #available(macOS 12.0, *) {
+                let isLowPower = ProcessInfo.processInfo.isLowPowerModeEnabled
+                energyStatus = isLowPower ? "Saving 🍃" : "Performance ⚡️"
+            } else {
+                energyStatus = "Not Supported ⚠️"
+            }
             print(
-                "\(Colors.orange)Energy:\(Colors.reset) \(isLowPower ? "Saving 🍃" : "Performance ⚡️")"
+                "\(Colors.orange)Energy:\(Colors.reset) \(energyStatus)"
             )
-        #else
-            // Linux doesn't have this API
-            print("\(Colors.orange)Energy:\(Colors.reset) N/A on Linux")
         #endif
 
         // Color Palette bar
