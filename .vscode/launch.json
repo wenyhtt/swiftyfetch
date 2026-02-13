@@ -19,6 +19,26 @@
             "target": "swiftfetch",
             "configuration": "release",
             "preLaunchTask": "swift: Build Release swiftfetch"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:swiftfetch}",
+            "name": "Debug swiftyfetch",
+            "target": "swiftyfetch",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug swiftyfetch"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:swiftfetch}",
+            "name": "Release swiftyfetch",
+            "target": "swiftyfetch",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release swiftyfetch"
         }
     ]
 }

@@ -14,7 +14,7 @@ struct LogoLoader {
         if let url = Bundle.module.url(
             forResource: name,
             withExtension: "txt",
-            subdirectory: "logo"),
+            subdirectory: "Resources/logos"),
             let content = try? String(contentsOf: url, encoding: .utf8)
         {
             return content

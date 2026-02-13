@@ -1,0 +1,63 @@
+name: SwiftyFetch Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux
+          - os: macos-latest
+            platform: macos
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Swift
+        uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: "6.2"
+      
+      - name: Build Release
+        run: swift build -c release --static-swift-stdlib
+
+      - name: Strip Binary
+        run: strip .build/release/swiftyfetch
+        continue-on-error: true
+
+      - name: Package for Users
+        run: |
+          mkdir staging
+          cp .build/release/swiftyfetch staging/swiftyfetch
+          cd staging
+          zip ../swiftyfetch-${{ matrix.platform }}.zip swiftyfetch
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: swiftyfetch-${{ matrix.platform }}
+          path: swiftyfetch-${{ matrix.platform }}.zip
+
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: swiftyfetch-${{ matrix.platform }}.zip
+          tag_name: ${{ github.ref }}
+          body: |
+            ## 🚀 SwiftyFetch ${{ github.ref_name }}
+            Thank you for using my fetch tool!
+            
+          body_path: RELEASENOTES.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
