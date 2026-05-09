@@ -1,3 +1,5 @@
+# Not being Maintained yet.
+
 # SwiftyFetch
 
 A lightweight, fast system information fetcher written in **Swift**. Similar to `neofetch` or `fastfetch`.
